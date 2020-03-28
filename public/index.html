@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+  
 
   <title>Dashboard</title>
 
@@ -120,7 +121,7 @@
 
           <!-- Topbar Search -->
           <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-            <div class="input-group">
+            <div class="input-group" id="searchBar">
               <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
               <div class="input-group-append">
                 <button class="btn btn-primary" type="button">
@@ -605,30 +606,73 @@
   <!-- Page level custom scripts -->
   <script src="js/demo/chart-area-demo.js"></script>
   <script src="js/demo/chart-pie-demo.js"></script>
-<script>
-  function getSymbol(){
-console.log("running");
-$.ajax({
-  type: "GET",
-  data: {
-      apikey:"bpulodvrh5rdgi0uf2ug",
-      format:"json",
-  },
 
-  url: "https://finnhub.io/api/v1/stock/symbol?exchange=US&token=bpulodvrh5rdgi0uf2ug",
-  dataType: "json",
-  contentType: 'application/json',
-  success: function(data) {
-      console.log(data);
-  
-  },  
-  fail: function(error) {
-    console.log(error);
-  } 
-});
-};
-getSymbol();
+  <!--<script src="public/script.js"></script>-->
+<script>
+
+
+//search for symbol
+var APIKey = "bpulodvrh5rdgi0uf2ug";
+var queryURL = "https://finnhub.io/api/v1" + "" + "&token=" + APIKey;
+var searchSymbol; //for search bar, when user imputs stock symbol
+var stockSymbolSearch = "/stock/symbol?exchange=US"; //so user can search for symbol with stock name
+var stockTrends = "/stock/recommendation?symbol=" + stockSymbol; //stock recommendations to buy/sell, etc.
+var stockSymbol = "AAPL"
+
+//search for symbol
+function getSymbol(){
+  var stockSearch = document.getElementById("searchBar").value;
+    console.log("running");
+    $.ajax({
+      type: "GET",
+      data: {
+          apikey:"bpulodvrh5rdgi0uf2ug",
+          format:"json",
+      },
+    
+      url: "https://finnhub.io/api/v1/stock/symbol?exchange=US&token=bpulodvrh5rdgi0uf2ug",
+      dataType: "json",
+      contentType: 'application/json',
+      success: function(data) {
+          console.log(data);
+      var stockName = data[0,1,2].displaySymbol;
+      console.log(stockName);
+      
+      },  
+      fail: function(error) {
+        console.log(error);
+      } 
+    });
+    };
+
+    function getRecommendations(){
+        console.log("rec");
+        $.ajax({
+          type: "GET",
+          data: {
+              apikey:"bpulodvrh5rdgi0uf2ug",
+              format:"json",
+          },
+        
+          url: "https://finnhub.io/api/v1/stock/recommendation?symbol=" + stockSymbol + "&token=" + APIKey,
+          dataType: "json",
+          contentType: 'application/json',
+          success: function(data) {
+              console.log(data);
+          var currentRec = data[0];
+          console.log(currentRec);
+          
+          },  
+          fail: function(error) {
+            console.log(error);
+          } 
+        });
+      };
+
+    getSymbol();
+    getRecommendations();
 </script>
+
 </body>
 
 </html>
