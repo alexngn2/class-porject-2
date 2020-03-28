@@ -46,4 +46,49 @@ module.exports = function(app) {
     });
   });
 
+
+// GET Route for getting all of the stocks owned by a user 
+app.get("/api/stocks-owned/:userid", function(req, res) {
+    db.StocksOwned.findAll({
+      where: {
+        UserId: req.params.userid
+      }
+    }).then(function(dbStocksOwned) {
+      res.json(dbStocksOwned);
+    });
+  });
+
+  // POST route for saving a stock in user's stockes owned list
+  app.post("/api/stocks-owned/:userid", function(req, res) {
+    db.StocksOwned.create({
+      "stock_symbol": req.body.stockSymbol,
+      UserId: req.params.userid
+    })
+    .then(function(dbStock) {
+        console.log(dbStock);
+        res.json(dbStock)
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+  });
+
+  // DELETE route for deleting a stock from a user's stocks owned list
+  app.delete("/api/stocks-owned/:userid/:stockid", function(req, res) {
+    db.StocksOwned.destroy({
+      where: {
+        UserId: req.params.userid,
+        id: req.params.stockid
+      } 
+    })
+    .then(function(dbStockOwned) {
+      console.log(dbStockOwned);
+      res.json(dbStockOwned);
+    })
+    .catch(function(err) {
+      console.log(err);  
+      res.json(err);
+    });
+  });  
+
 };
