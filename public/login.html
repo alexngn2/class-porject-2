@@ -39,34 +39,35 @@
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                   </div>
-                  <form class="user">
+                  <form class="user login">
                     <div class="form-group">
                       <input type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
                     </div>
                     <div class="form-group">
                       <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <div class="custom-control custom-checkbox small">
                         <input type="checkbox" class="custom-control-input" id="customCheck">
                         <label class="custom-control-label" for="customCheck">Remember Me</label>
                       </div>
-                    </div>
-                    <a href="index.html" class="btn btn-primary btn-user btn-block">
+                    </div> -->
+                    <!-- <a href="index.html" class="btn btn-primary btn-user btn-block">
                       Login
-                    </a>
+                    </a> -->
                     <hr>
-                    <a href="index.html" class="btn btn-google btn-user btn-block">
+                    <button type="submit" class="btn btn-primary btn-user btn-block">Login</button>
+                    <!-- <a href="index.html" class="btn btn-google btn-user btn-block">
                       <i class="fab fa-google fa-fw"></i> Login with Google
                     </a>
                     <a href="index.html" class="btn btn-facebook btn-user btn-block">
                       <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                    </a>
+                    </a> -->
                   </form>
                   <hr>
-                  <div class="text-center">
+                  <!-- <div class="text-center">
                     <a class="small" href="forgot-password.html">Forgot Password?</a>
-                  </div>
+                  </div> -->
                   <div class="text-center">
                     <a class="small" href="register.html">Create an Account!</a>
                   </div>
@@ -91,6 +92,49 @@
 
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
+
+  <script>
+    $(document).ready(function() {
+      // Getting references to our form and inputs
+      var loginForm = $("form.login");
+      var emailInput = $("input#exampleInputEmail");
+      var passwordInput = $("input#exampleInputPassword");
+    
+      // When the form is submitted, we validate there's an email and password entered
+      loginForm.on("submit", function(event) {
+        event.preventDefault();
+        var userData = {
+          email: emailInput.val().trim(),
+          password: passwordInput.val().trim()
+        };
+    
+        if (!userData.email || !userData.password) {
+          return;
+        }
+    
+        // If we have an email and password we run the loginUser function and clear the form
+        loginUser(userData.email, userData.password);
+        emailInput.val("");
+        passwordInput.val("");
+      });
+    
+      // loginUser does a post to our "api/login" route and if successful, redirects us the the members page
+      function loginUser(email, password) {
+        $.post("/api/login", {
+          email: email,
+          password: password
+        })
+          .then(function() {
+            window.location.replace("/members");
+            // If there's an error, log the error
+          })
+          .catch(function(err) {
+            console.log(err);
+          });
+      }
+    });
+      
+  </script>
 
 </body>
 
