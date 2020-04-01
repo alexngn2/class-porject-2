@@ -4,10 +4,10 @@ CREATE DATABASE stocks_db;
 
 -- USE stocks_db;
 
--- INSERT INTO USERS (first_name, last_name, email, password, createdAt, updatedAt) 
+-- INSERT INTO USERS (firstname, lastname, email, password, createdAt, updatedAt) 
 -- VALUES ("Chris", "Thompson", "chris@gmail.com", "qwerqwer", CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
--- INSERT INTO USERS (first_name, last_name, email, password, createdAt, updatedAt) 
+-- INSERT INTO USERS (firstname, lastname, email, password, createdAt, updatedAt) 
 -- VALUES ("Carol", "Anderson", "carol@gmail.com", "zxcvzxcv", CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 

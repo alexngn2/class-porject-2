@@ -1,11 +1,18 @@
+// Requiring express and express-session
 var express = require("express");
+var session = require("express-session");
 
-// Sets up the express app
-var app = express();
+// Requiring passport
+var passport = require("./config/passport");
+
+// Setting up the port
 var PORT = process.env.PORT || 8080;
 
 // Requiring our models for syncing
 var db = require("./models");
+
+// Creating express app
+var app = express();
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
@@ -15,8 +22,12 @@ app.use(express.json());
 app.use(express.static("public"));
 
 
-//add passport here if decided
+// We need to use sessions to keep track of our user's login status
+app.use(session({ secret: "keyboard cat", resave: true, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 
+// Requiring our routes
 require("./routes/html-routes.js")(app);
 require("./routes/api-routes.js")(app);
 
@@ -29,6 +40,8 @@ db.sequelize.sync().then(function () {
     );
   });
 });
+
+
 
 // const WebSocket = require("ws");
 // const socket = new WebSocket('wss://ws.finnhub.io?token=');

@@ -25,7 +25,7 @@
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
               </div>
-              <form class="user">
+              <form class="user signup">
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="First Name">
@@ -45,21 +45,22 @@
                     <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password">
                   </div>
                 </div>
-                <a href="login.html" class="btn btn-primary btn-user btn-block">
+                <!-- <a href="login.html" class="btn btn-primary btn-user btn-block">
                   Register Account
                 </a>
-                <hr>
-                <a href="index.html" class="btn btn-google btn-user btn-block">
+                <hr> -->
+                <button class="btn btn-primary btn-user btn-block" type="submit">Register Button</button>
+                <!-- <a href="index.html" class="btn btn-google btn-user btn-block">
                   <i class="fab fa-google fa-fw"></i> Register with Google
                 </a>
                 <a href="index.html" class="btn btn-facebook btn-user btn-block">
                   <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
-                </a>
+                </a> -->
               </form>
               <hr>
-              <div class="text-center">
+              <!-- <div class="text-center">
                 <a class="small" href="forgot-password.html">Forgot Password?</a>
-              </div>
+              </div> -->
               <div class="text-center">
                 <a class="small" href="login.html">Already have an account? Login!</a>
               </div>
@@ -76,5 +77,65 @@
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<script>
+
+$(document).ready(function() {
+    // Getting references to our form and input
+    var signUpForm = $("form.signup");
+    var firstnameInput = $("input#exampleFirstName");
+    var lastnameInput = $("input#exampleLastName")
+    var emailInput = $("input#exampleInputEmail");
+    var passwordInput = $("input#exampleInputPassword");
+    var repeatPasswordInput = $("input#exampleRepeatPassword");
+
+    // When the signup button is clicked, we validate the email and password are not blank
+    signUpForm.on("submit", function(event) {
+      console.log("I am in handler");
+      event.preventDefault();
+      var userData = {
+        firstname: firstnameInput.val().trim(),
+        lastname: lastnameInput.val().trim(),
+        email: emailInput.val().trim(),
+        password: passwordInput.val().trim()
+      };
+  
+      if (!userData.email || !userData.password || !userData.firstname || !userData.lastname) {
+        return;
+      }
+      // If we have an email and password, run the signUpUser function
+      signUpUser(userData.firstname, userData.lastname, userData.email, userData.password);
+      firstnameInput.val("");
+      lastnameInput.val("");
+      emailInput.val("");
+      passwordInput.val("");
+      repeatPasswordInput.val("");
+    });
+  
+    // Does a post to the signup route. If successful, we are redirected to the members page
+    // Otherwise we log any errors
+    function signUpUser(firstname, lastname, email, password) {
+      $.post("/api/signup", {
+        firstname: firstname,
+        lastname: lastname,
+        email: email,
+        password: password
+      })
+        .then(function(data) {
+          window.location.replace("/members");
+        })
+        .catch(handleLoginErr);
+    }
+  
+    function handleLoginErr(err) {
+      $("#alert .msg").text(err.responseJSON);
+      $("#alert").fadeIn(500);
+    }
+  });
+  
+</script>
+
 </body>
 </html>
