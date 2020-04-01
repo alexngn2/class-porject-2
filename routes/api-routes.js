@@ -16,8 +16,9 @@ module.exports = function(app) {
 
   // POST route for saving a stock in user's wishlist
   app.post("/api/stocks-wishlist/:userid", function(req, res) {
+    console.log(req.body);
     db.StocksWishlist.create({
-      "stock_symbol": req.body,
+      "stock_symbol": req.body.stockSymbol,
       UserId: req.params.userid
     })
     .then(function(dbStock) {
