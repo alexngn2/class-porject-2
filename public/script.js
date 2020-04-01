@@ -45,6 +45,7 @@ function searchForStock() {
       newList.push(stock)
       //return stock.symbol;
     }
+
     //console.log("input",userInput);
     //console.log("stock",stock);
 
@@ -64,21 +65,41 @@ function displaySearchResults(newList) {
     $("#searchResults").append(div);
   })
 }
+   
+    $(document).on("click", ".searchRes", function() {
+      console.log("results", this);
+      var clickStock = $(this).text();
+      clickStock = clickStock.split("--")[1];
+      let stockExists = false;
+      userWishlist.forEach(stock => {
+        if(stock === clickStock) {
+          stockExists = true;
+        }
+      })
+      if(stockExists === false) {
+      console.log(clickStock);
+      userWishlist.push(clickStock);
+      renderWishlist();
+      getRecommendations();
+    }
+    });
 
-$(document).on("click", ".searchRes", function () {
-  console.log("results", this);
-  var clickStock = $(this).text();
-  clickStock = clickStock.split("--")[1];
-  console.log(clickStock);
-  userWishlist.push(clickStock);
-  postStock();
-  getRecommendations();
-});
+    function renderWishlist() {
+      if(userWishlist.length !== 0) {
+        $("#wishlist").empty();
+        userWishlist.forEach(stock => {
+          var div = $('<div>');
+          div.text(stock);
+          console.log("render wishlist", stock);
+          $("#wishlist").append(div);
+        })
+      }
+    }
 
-document.getElementById("searchButton").addEventListener("click", function (event) {
-  event.preventDefault();
-  searchForStock();
-});
+    document.getElementById("searchButton").addEventListener("click", function(event) {
+      event.preventDefault();
+      searchForStock();
+    });
 
 function getRecommendations() {
   if (userWishlist) {
@@ -130,4 +151,4 @@ function postStock() {
     });
 }
 
-
+renderWishlist();
