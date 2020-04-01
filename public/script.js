@@ -1,3 +1,32 @@
+$(document).ready(function() {
+
+  $.get("/api/user_data").then(function(data) {
+    var user_id = data.id;
+    console.log("USER ID: " + user_id);
+    getStocksWishlist(user_id);
+  });
+
+  
+  function getStocksWishlist(user_id) {
+    var userid = user_id;
+
+    $.get("/api/stocks-wishlist/" + userid, function(data) {          
+      var stocksList = data;
+      if (stocksList.length < 1) {
+        return;
+      }
+      else {
+        console.log(stocksList);
+        let stockSymbols = [];
+        stocksList.forEach(stock => { 
+          stockSymbols.push(stock.stock_symbol);
+        });
+        console.log(stockSymbols);
+        renderWishlist(stockSymbols);
+      }
+    });
+  }  
+
 var APIKey = "bpulodvrh5rdgi0uf2ug";
 var queryURL = "https://finnhub.io/api/v1" + "" + "&token=" + APIKey;
 var searchSymbol; //for search bar, when user imputs stock symbol
