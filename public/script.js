@@ -69,10 +69,31 @@ function getSymbol(){
       console.log("results", this);
       var clickStock = $(this).text();
       clickStock = clickStock.split("--")[1];
+      let stockExists = false;
+      userWishlist.forEach(stock => {
+        if(stock === clickStock) {
+          stockExists = true;
+        }
+      })
+      if(stockExists === false) {
       console.log(clickStock);
       userWishlist.push(clickStock);
+      renderWishlist();
       getRecommendations();
+    }
     });
+
+    function renderWishlist() {
+      if(userWishlist.length !== 0) {
+        $("#wishlist").empty();
+        userWishlist.forEach(stock => {
+          var div = $('<div>');
+          div.text(stock);
+          console.log("render wishlist", stock);
+          $("#wishlist").append(div);
+        })
+      }
+    }
 
     document.getElementById("searchButton").addEventListener("click", function(event) {
       event.preventDefault();
@@ -108,3 +129,4 @@ function getSymbol(){
   }
 }
 getSymbol();
+renderWishlist();
