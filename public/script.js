@@ -1,7 +1,8 @@
 $(document).ready(function() {
-
+  var userWishlist = [];
+  var user_id;
   $.get("/api/user_data").then(function(data) {
-    var user_id = data.id;
+    user_id = data.id;
     console.log("USER ID: " + user_id);
     getStocksWishlist(user_id);
   });
@@ -22,7 +23,9 @@ $(document).ready(function() {
           stockSymbols.push(stock.stock_symbol);
         });
         console.log(stockSymbols);
-        renderWishlist(stockSymbols);
+        userWishlist = stockSymbols;
+        // renderWishlist(stockSymbols);
+        renderWishlist();
       }
     });
   }  
@@ -33,7 +36,7 @@ var searchSymbol; //for search bar, when user imputs stock symbol
 var stockSymbolSearch = "/stock/symbol?exchange=US"; //so user can search for symbol with stock name
 var globalStocklist;
 
-let userWishlist = [];
+// let userWishlist = [];
 
 //search for symbol
 function getSymbol() {
@@ -95,6 +98,24 @@ function displaySearchResults(newList) {
   })
 }
    
+    // $(document).on("click", ".searchRes", function() {
+    //   console.log("results", this);
+    //   var clickStock = $(this).text();
+    //   clickStock = clickStock.split("--")[1];
+    //   let stockExists = false;
+    //   userWishlist.forEach(stock => {
+    //     if(stock === clickStock) {
+    //       stockExists = true;
+    //     }
+    //   })
+    //   if(stockExists === false) {
+    //   console.log(clickStock);
+    //   userWishlist.push(clickStock);
+    //   renderWishlist();
+    //   getRecommendations();
+    // }
+    // });
+
     $(document).on("click", ".searchRes", function() {
       console.log("results", this);
       var clickStock = $(this).text();
@@ -107,11 +128,21 @@ function displaySearchResults(newList) {
       })
       if(stockExists === false) {
       console.log(clickStock);
-      userWishlist.push(clickStock);
-      renderWishlist();
+      newStock = { stockSymbol: clickStock };
+      // Send the POST request.   
+      $.ajax("/api/stocks-wishlist/" + user_id, {
+        type: "POST",
+        data: newStock
+      }).then(
+        function() {
+          console.log("created new stock");
+          // Reload the page to get the updated list
+          location.reload();
+        }
+      );
       getRecommendations();
     }
-    });
+    });    
 
     function renderWishlist() {
       if(userWishlist.length !== 0) {
@@ -181,5 +212,6 @@ function postStock() {
 }
 
 renderWishlist();
+
 
 });
