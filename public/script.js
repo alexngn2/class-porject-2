@@ -181,3 +181,5 @@ function postStock() {
 }
 
 renderWishlist();
+
+});
