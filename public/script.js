@@ -56,26 +56,55 @@ function getSymbol() {
       var stockName = data[0, 1, 2].displaySymbol;
       globalStocklist = data;
       console.log(stockName);
+      
+      },  
+      fail: function(error) {
+        console.log(error);
+      } 
+    });
+    };
+
+    //searchbar function
+    function searchForStock() {
+      var userInput = document.getElementById("searchBar").value;
+      userInput = userInput.toLowerCase();
+      var newList = []
+      globalStocklist.map(stock => {
+        stock.description = stock.description.toLowerCase();
+        console.log("input",userInput);
+        //console.log("stock",stock);
+        if (stock.description.includes(userInput)) {
+        console.log("stock",stock);
+          newList.push(stock)
+          //return stock.symbol;
+        }
+        //console.log("input",userInput);
+        //console.log("stock",stock);
+
+      })
+      console.log("new",newList);
+
+      //call to display list items
+      displaySearchResults(newList);
+
 
     },
     fail: function (error) {
       console.log(error);
+
     }
   });
 };
 
-function searchForStock() {
-  var userInput = document.getElementById("searchBar").value;
-  userInput = userInput.toLowerCase();
-  var newList = []
-  globalStocklist.map(stock => {
-    stock.description = stock.description.toLowerCase();
-    console.log("input", userInput);
-    //console.log("stock",stock);
-    if (stock.description.includes(userInput)) {
-      console.log("stock", stock);
-      newList.push(stock)
-      //return stock.symbol;
+    //append list items to page, so user can click on which ones they wish to add
+    function displaySearchResults(newList) {
+      
+      newList.forEach(stock => {
+        var div = $('<button>');
+        div.attr("class", "searchRes");
+        div.text(`${stock.description}--${stock.symbol}`)
+        $("#searchResults").append(div);
+      })
     }
 
     //console.log("input",userInput);
@@ -98,6 +127,9 @@ function displaySearchResults(newList) {
   })
 }
    
+
+    //click function so user can add stocks to wishlist
+
     // $(document).on("click", ".searchRes", function() {
     //   console.log("results", this);
     //   var clickStock = $(this).text();
@@ -115,6 +147,7 @@ function displaySearchResults(newList) {
     //   getRecommendations();
     // }
     // });
+
 
     $(document).on("click", ".searchRes", function() {
       console.log("results", this);
@@ -144,6 +177,7 @@ function displaySearchResults(newList) {
     }
     });    
 
+    //appends stock symbols to wishlist
     function renderWishlist() {
       if(userWishlist.length !== 0) {
         $("#wishlist").empty();
@@ -156,28 +190,32 @@ function displaySearchResults(newList) {
       }
     }
 
+    //search button
     document.getElementById("searchButton").addEventListener("click", function(event) {
       event.preventDefault();
       searchForStock();
     });
 
-function getRecommendations() {
-  if (userWishlist) {
-    userWishlist.forEach(stockSymbol => {
 
+    //takes stock symbol parameters from search and add functions, and gets stock recommendations from api
+    function getRecommendations(){
+        if(userWishlist) {
+          userWishlist.forEach(stockSymbol => {
+            
+          
+        $.ajax({
+          type: "GET",
+          data: {
+              apikey:"bpulodvrh5rdgi0uf2ug",
+              format:"json",
+          },
+        
+          url: "https://finnhub.io/api/v1/stock/recommendation?symbol=" + stockSymbol + "&token=" + APIKey,
+          dataType: "json",
+          contentType: 'application/json',
+          success: function(data) {
+              console.log(data);
 
-      $.ajax({
-        type: "GET",
-        data: {
-          apikey: "bpulodvrh5rdgi0uf2ug",
-          format: "json",
-        },
-
-        url: "https://finnhub.io/api/v1/stock/recommendation?symbol=" + stockSymbol + "&token=" + APIKey,
-        dataType: "json",
-        contentType: 'application/json',
-        success: function (data) {
-          console.log(data);
           var currentRec = data[0];
           console.log(currentRec);
 
