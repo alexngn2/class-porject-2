@@ -1,25 +1,25 @@
 {
     "development": {
-      "username": "root",
-      "password": "Guruji12",
-      "database": "stocks_db",
-      "host": "127.0.0.1",
+      "username": "nt9dggb2v18vpudo",
+      "password": "s4j1hceaxkpyph06",
+      "database": "jyzt8d0ay4mx8qtt",
+      "host": "zy4wtsaw3sjejnud.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
       "port": 3306,
       "dialect": "mysql"
     },
     "test": {
-      "username": "root",
-      "password": null,
-      "database": "database_test",
-      "host": "127.0.0.1",
+      "username": "nt9dggb2v18vpudo",
+      "password": "s4j1hceaxkpyph06",
+      "database": "jyzt8d0ay4mx8qtt",
+      "host": "zy4wtsaw3sjejnud.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
       "port": 3306,
       "dialect": "mysql"
     },
     "production": {
-      "username": "root",
-      "password": null,
-      "database": "database_production",
-      "host": "127.0.0.1",
+      "username": "nt9dggb2v18vpudo",
+      "password": "s4j1hceaxkpyph06",
+      "database": "jyzt8d0ay4mx8qtt",
+      "host": "zy4wtsaw3sjejnud.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
       "port": 3306,
       "dialect": "mysql"
     }
