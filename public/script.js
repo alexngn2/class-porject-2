@@ -32,6 +32,7 @@ function getSymbol(){
     });
     };
 
+    //searchbar function
     function searchForStock() {
       var userInput = document.getElementById("searchBar").value;
       userInput = userInput.toLowerCase();
@@ -51,20 +52,22 @@ function getSymbol(){
       })
       console.log("new",newList);
 
-      //call for dropdown display
+      //call to display list items
       displaySearchResults(newList);
     }
 
+    //append list items to page, so user can click on which ones they wish to add
     function displaySearchResults(newList) {
       
       newList.forEach(stock => {
-        var div = $('<div>');
+        var div = $('<button>');
         div.attr("class", "searchRes");
         div.text(`${stock.description}--${stock.symbol}`)
         $("#searchResults").append(div);
       })
     }
    
+    //click function so user can add stocks to wishlist
     $(document).on("click", ".searchRes", function() {
       console.log("results", this);
       var clickStock = $(this).text();
@@ -83,6 +86,7 @@ function getSymbol(){
     }
     });
 
+    //appends stock symbols to wishlist
     function renderWishlist() {
       if(userWishlist.length !== 0) {
         $("#wishlist").empty();
@@ -95,11 +99,13 @@ function getSymbol(){
       }
     }
 
+    //search button
     document.getElementById("searchButton").addEventListener("click", function(event) {
       event.preventDefault();
       searchForStock();
     });
 
+    //takes stock symbol parameters from search and add functions, and gets stock recommendations from api
     function getRecommendations(){
         if(userWishlist) {
           userWishlist.forEach(stockSymbol => {
